@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nuestra Boda</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: black;
+        }
+
+        /* Contenedor de la introducción */
+        #intro {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: black;
+        }
+
+        /* Botón Entrar */
+		#btnEntrar {
+			position: absolute;
+
+			left: 50%;
+			bottom: 8%;
+
+			transform: translateX(-50%);
+
+			padding: 14px 38px;
+
+			font-size: 18px;
+			letter-spacing: 3px;
+
+			color: white;
+			background: rgba(0, 0, 0, 0.30);
+
+			border: 1px solid rgba(255, 255, 255, 0.8);
+			border-radius: 30px;
+
+			cursor: pointer;
+
+			/* Siempre por encima de los videos */
+			z-index: 10;
+
+			/* Inicialmente invisible */
+			opacity: 0;
+			visibility: hidden;
+
+			transition:
+				opacity 0.5s ease,
+				background 0.3s ease;
+		}
+
+
+		/* Cuando debe aparecer */
+		#btnEntrar.visible {
+			opacity: 1;
+			visibility: visible;
+		}
+
+
+		/* Efecto al pasar el mouse */
+		#btnEntrar:hover {
+			background: rgba(255, 255, 255, 0.20);
+		}
+		
+		
+		/* Video principal */
+		#videoIntro {
+			position: relative;
+			z-index: 2;
+
+			width: 100%;
+			height: 100%;
+
+			object-fit: cover;
+			display: block;
+		}
+
+		/* Video utilizado como fondo */
+		#videoFondo {
+			display: none;
+		}
+		
+		
+		/* CELULARES EN VERTICAL */
+		@media (max-width: 768px) and (orientation: portrait) {
+
+			#intro {
+				position: relative;
+				overflow: hidden;
+				background: black;
+			}
+
+			/* Fondo ampliado y desenfocado */
+			#videoFondo {
+				display: block;
+
+				position: absolute;
+				top: -5%;
+				left: -5%;
+
+				width: 110%;
+				height: 110%;
+
+				object-fit: cover;
+
+				filter: blur(14px) brightness(0.85);
+				opacity: 0.85;
+
+				z-index: 1;
+			}
+
+			/* Video principal */
+			#videoIntro {
+				position: relative;
+
+				width: 100%;
+				height: 100%;
+
+				object-fit: contain;
+
+				z-index: 2;
+
+				/* Degradado superior e inferior */
+				-webkit-mask-image: linear-gradient(
+					to bottom,
+					transparent 0%,
+					black 4%,
+					black 96%,
+					transparent 100%
+				);
+
+				mask-image: linear-gradient(
+					to bottom,
+					transparent 0%,
+					black 4%,
+					black 96%,
+					transparent 100%
+				);
+			}
+
+			/* Botón */
+			#btnEntrar {
+				z-index: 3;
+				bottom: 12%;
+			}
+		}
+		
+		
+		
+		
+    </style>
+</head>
+
+<body>
+
+    <div id="intro">
+
+        <!-- Video de fondo desenfocado -->
+		<video
+			id="videoFondo"
+			class="video-fondo"
+			autoplay
+			muted
+			playsinline
+			preload="auto"
+		>
+			<source src="intro.mp4" type="video/mp4">
+		</video>
+
+		<!-- Video principal -->
+		<video
+			id="videoIntro"
+			class="video-principal"
+			autoplay
+			muted
+			playsinline
+			preload="auto"
+		>
+			<source src="intro.mp4" type="video/mp4">
+		</video>
+
+        <button id="btnEntrar">
+            ENTRAR
+        </button>
+
+    </div>
+
+
+    <script>
+
+		// ==========================================
+		// ELEMENTOS
+		// ==========================================
+
+		const video = document.getElementById("videoIntro");
+		const videoFondo = document.getElementById("videoFondo");
+		const boton = document.getElementById("btnEntrar");
+
+		let botonMostrado = false;
+
+
+		// ==========================================
+		// SINCRONIZACIÓN DEL VIDEO DE FONDO
+		// ==========================================
+
+		/*
+		Cuando comienza el video principal,
+		iniciamos también el video de fondo.
+		*/
+
+		video.addEventListener("play", function () {
+
+			// Igualamos el tiempo de ambos videos
+			videoFondo.currentTime = video.currentTime;
+
+			// Reproducimos el fondo
+			videoFondo.play().catch(function () {
+				// Evita errores si el navegador bloquea
+				// temporalmente la reproducción.
+			});
+
+		});
+
+
+		// ==========================================
+		// MOSTRAR BOTÓN 0.5 SEGUNDOS ANTES
+		// ==========================================
+
+		video.addEventListener("timeupdate", function () {
+
+			// Verificamos que la duración esté disponible
+			if (!isNaN(video.duration)) {
+
+				const tiempoRestante =
+					video.duration - video.currentTime;
+
+				/*
+				Cuando falten 0.5 segundos,
+				mostramos el botón.
+				*/
+
+				if (
+					tiempoRestante <= 0.5 &&
+					!botonMostrado
+				) {
+
+					boton.classList.add("visible");
+
+					botonMostrado = true;
+				}
+			}
+
+		});
+
+
+		// ==========================================
+		// CUANDO TERMINA EL VIDEO
+		// ==========================================
+
+		video.addEventListener("ended", function () {
+
+			/*
+			El video principal queda mostrando
+			su último fotograma.
+			*/
+
+			// Detenemos también el fondo
+			videoFondo.pause();
+
+			// Nos aseguramos de mostrar el botón
+			boton.classList.add("visible");
+
+			botonMostrado = true;
+
+		});
+
+
+		// ==========================================
+		// CORRECCIÓN DE SINCRONIZACIÓN
+		// ==========================================
+
+		/*
+		Si por alguna razón el video de fondo
+		se separa demasiado del principal,
+		corregimos automáticamente su posición.
+		*/
+
+		video.addEventListener("timeupdate", function () {
+
+			const diferencia =
+				Math.abs(video.currentTime - videoFondo.currentTime);
+
+			if (diferencia > 0.15) {
+
+				videoFondo.currentTime = video.currentTime;
+
+			}
+
+		});
+
+
+		// ==========================================
+		// BOTÓN ENTRAR
+		// ==========================================
+
+		boton.addEventListener("click", function () {
+
+			/*
+			Acción provisional.
+
+			Más adelante reemplazaremos esto
+			por la entrada a la invitación.
+			*/
+
+			alert("Aquí comenzará la invitación");
+
+		});
+
+</script>
+
+</body>
+</html>
