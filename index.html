@@ -6,6 +6,10 @@
 
     <title>Nuestra Boda</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&amp;family=Cormorant+Garamond:ital,wght@1,400&amp;family=DM+Serif+Display:wght@400&amp;family=Pompiere:wght@400&amp;display=swap">
+
     <style>
         * {
             margin: 0;
@@ -26,6 +30,7 @@
             position: relative;
             width: 100%;
             height: 100vh;
+            height: 100dvh;
             background: black;
         }
 
@@ -162,18 +167,200 @@
 		
 		
 		
+        #portada {
+            position: absolute; inset: 0; z-index: 20;
+            width: 100%; height: 100%; border: 0;
+            background: #fff; color: #000; cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.45s ease, visibility 0.45s;
+        }
+        #portada.abierta {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        #videoSobre {
+            width: 100%; height: 100%; object-fit: contain;
+            pointer-events: none;
+        }
+        #textoSobre {
+            position: absolute; left: 50%;
+            bottom: max(8%, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            width: max-content; max-width: 90%; padding: 12px 24px;
+            border-radius: 30px; background: transparent; color: #000;
+            font: 16px/1.5 Georgia, serif; letter-spacing: 1px;
+        }
+        #portada:focus-visible, #btnEntrar:focus-visible {
+            outline: 3px solid white; outline-offset: -6px;
+        }
+        #portada:focus-visible { outline-color: #000; }
+        @media (prefers-reduced-motion: reduce) {
+            #portada, #btnEntrar { transition: none; }
+        }
+
+        /* El main puede alojar nuevas secciones consecutivas. */
+        html.invitacion-abierta,
+        html.invitacion-abierta body {
+            height: auto;
+            min-height: 100%;
+            overflow-x: clip;
+            overflow-y: auto;
+            background: #fff;
+        }
+        #invitacion { background: #fff; color: #382137; }
+        html.invitacion-abierta #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            opacity: 1;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+        html.invitacion-abierta #intro.salida { opacity: 0; }
+
+        .bienvenida {
+            position: relative;
+            isolation: isolate;
+            container-type: inline-size;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1 / 2;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin-inline: auto;
+            background: #fff;
+        }
+        .bienvenida-decoracion {
+            position: absolute;
+            display: block;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+        .bienvenida-flores-superiores { top: 0; right: 0; width: 46%; }
+        .bienvenida-flores-inferiores { bottom: 0; left: 0; width: 43%; }
+        .bienvenida-pajaro-derecha { top: 15%; right: 29%; width: 20%; z-index: 2; }
+        .bienvenida-pajaro-izquierda { top: 65%; left: 3%; width: 22%; z-index: 2; }
+        .bienvenida-texto {
+            position: absolute;
+            z-index: 2;
+            font-weight: 400;
+        }
+        .bienvenida-encabezado {
+            top: 7%; left: 8%; width: 53%;
+            font-family: "Cormorant Garamond", serif;
+            font-style: italic;
+            color: rgb(5, 59, 17);
+            font-size: clamp(18px, 5vw, 25px);
+            font-size: max(18px, 5cqw);
+            line-height: 1.35;
+        }
+        .bienvenida-nombres {
+            position: absolute;
+            top: 23%; left: 9%; width: 80%;
+            z-index: 2;
+            font-weight: 400;
+            line-height: 1.15;
+            color: rgb(11, 148, 42);
+        }
+        .bienvenida-nombres:focus { outline: none; }
+        .bienvenida-monica {
+            display: block;
+            font-family: "Great Vibes", cursive;
+            color: rgb(74, 219, 38);
+            font-size: clamp(38px, 13vw, 65px);
+            font-size: 13cqw;
+        }
+        .bienvenida-cristian {
+            display: block;
+            margin-top: 0.12em;
+            margin-left: 20%;
+            font-family: "DM Serif Display", serif;
+            font-size: clamp(42px, 14vw, 70px);
+            font-size: 14cqw;
+        }
+        .bienvenida-central {
+            position: absolute;
+            top: 42%; left: 9%; width: 82%; height: auto;
+            object-fit: contain;
+            z-index: 1;
+        }
+        .bienvenida-detalles {
+            bottom: 7%; right: 5%; width: 63%;
+            font-family: "Pompiere", serif;
+            color: rgb(0, 0, 0);
+            font-size: clamp(16px, 4vw, 20px);
+            font-size: max(16px, 4cqw);
+            line-height: 1.45;
+            text-align: center;
+            overflow-wrap: break-word;
+        }
+        /* La base conserva la composicion vertical y ocupa al menos el viewport.
+           En horizontal se redistribuyen los mismos elementos, sin duplicar HTML. */
+        @media (orientation: landscape) {
+            .bienvenida {
+                max-width: none;
+                aspect-ratio: auto;
+                min-height: max(680px, 100vh);
+                min-height: max(680px, 100dvh);
+            }
+            .bienvenida-encabezado {
+                top: 5%; left: 20%; width: 60%;
+                text-align: center;
+                font-size: clamp(18px, 1.8vw, 28px);
+            }
+            .bienvenida-encabezado br { display: inline; }
+            .bienvenida-encabezado br::after { content: " "; }
+            .bienvenida-nombres {
+                top: 14%; left: 10%; width: 80%;
+                display: flex;
+                justify-content: center;
+                align-items: baseline;
+                gap: 0.3em;
+            }
+            .bienvenida-monica { font-size: clamp(38px, 4.8vw, 88px); }
+            .bienvenida-cristian {
+                margin: 0;
+                font-size: clamp(42px, 5.1vw, 94px);
+            }
+            .bienvenida-central {
+                top: 28%; left: 22%; width: 56%; height: 48%;
+            }
+            .bienvenida-flores-superiores { width: clamp(160px, 25vw, 440px); }
+            .bienvenida-flores-inferiores { width: clamp(140px, 24vw, 420px); }
+            .bienvenida-pajaro-izquierda {
+                top: 49%; left: 16%; width: clamp(75px, 12vw, 170px);
+            }
+            .bienvenida-pajaro-derecha {
+                top: 32%; right: 17%; width: clamp(75px, 12vw, 170px);
+            }
+            .bienvenida-detalles {
+                bottom: 5%; right: 20%; width: 60%;
+                font-size: clamp(18px, 1.6vw, 25px);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html.invitacion-abierta #intro { transition: none; }
+        }
     </style>
 </head>
 
 <body>
 
     <div id="intro">
+        <button id="portada" type="button" aria-label="Abrir invitaci&#243;n">
+            <video id="videoSobre" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+                <source src="Boton_inicio.mp4" type="video/mp4">
+            </video>
+            <span id="textoSobre" role="status">Toca el sobre para abrir la invitaci&#243;n</span>
+        </button>
+        <audio id="audioIntro" preload="auto" src="Audio_cp.mp3"></audio>
 
         <!-- Video de fondo desenfocado -->
 		<video
 			id="videoFondo"
 			class="video-fondo"
-			autoplay
 			muted
 			playsinline
 			preload="auto"
@@ -185,7 +372,6 @@
 		<video
 			id="videoIntro"
 			class="video-principal"
-			autoplay
 			muted
 			playsinline
 			preload="auto"
@@ -193,12 +379,44 @@
 			<source src="intro.mp4" type="video/mp4">
 		</video>
 
-        <button id="btnEntrar">
+        <button id="btnEntrar" type="button">
             ENTRAR
         </button>
 
     </div>
 
+
+    <main id="invitacion" hidden>
+        <section class="bienvenida" aria-labelledby="nombresNovios">
+            <img class="bienvenida-decoracion bienvenida-flores-superiores"
+                 src="FloresPG1_superior.png" width="2500" height="3500" alt="">
+            <p class="bienvenida-texto bienvenida-encabezado">
+                Estás invitada(o)<br>a la boda de
+            </p>
+            <video class="bienvenida-decoracion bienvenida-pajaro-derecha"
+                   autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+                <source src="PajaroPG1_Derecha.mp4" type="video/mp4">
+            </video>
+            <h1 class="bienvenida-nombres" id="nombresNovios" tabindex="-1">
+                <span class="bienvenida-monica">Mónica y</span>
+                <span class="bienvenida-cristian">Cristian</span>
+            </h1>
+            <img class="bienvenida-central" src="ImgCentralPG1.png"
+                 width="5905" height="4724" alt="Ilustración de Mónica y Cristian">
+            <video class="bienvenida-decoracion bienvenida-pajaro-izquierda"
+                   autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+                <source src="PajaroPG1_Izquierda.mp4" type="video/mp4">
+            </video>
+            <img class="bienvenida-decoracion bienvenida-flores-inferiores"
+                 src="FloresPG1_inferior.png" width="2500" height="3500" alt="">
+            <p class="bienvenida-texto bienvenida-detalles">
+                Este sábado 12 de diciembre a las 12&nbsp;m<br>
+                en la finca &quot;El Angelito&quot;, vereda de<br>
+                Pirgua, Tunja.
+            </p>
+        </section>
+        <!-- Agregar las siguientes secciones aqui, dentro del mismo main. -->
+    </main>
 
     <script>
 
@@ -211,6 +429,50 @@
 		const boton = document.getElementById("btnEntrar");
 
 		let botonMostrado = false;
+        const portada = document.getElementById("portada");
+        const sobre = document.getElementById("videoSobre");
+        const audio = document.getElementById("audioIntro");
+        const textoSobre = document.getElementById("textoSobre");
+        let iniciando = false;
+        let iniciado = false;
+
+        portada.addEventListener("click", function () {
+            if (iniciando || iniciado) return;
+            iniciando = true;
+            portada.setAttribute("aria-busy", "true");
+            textoSobre.textContent = "Abriendo invitaci\u00f3n...";
+
+            // Iniciar ambos medios dentro del gesto del usuario.
+            const reproduccionAudio = audio.play();
+            const reproduccionVideo = video.play();
+            Promise.all([reproduccionVideo, reproduccionAudio]).then(function () {
+                iniciado = true;
+                iniciando = false;
+                portada.removeAttribute("aria-busy");
+                portada.classList.add("abierta");
+                portada.disabled = true;
+                sobre.pause();
+            }).catch(function () {
+                video.pause();
+                videoFondo.pause();
+                audio.pause();
+                video.currentTime = 0;
+                videoFondo.currentTime = 0;
+                audio.currentTime = 0;
+                boton.classList.remove("visible");
+                botonMostrado = false;
+                iniciando = false;
+                portada.removeAttribute("aria-busy");
+                textoSobre.textContent = "No se pudo iniciar. Toca para volver a intentar";
+            });
+        });
+
+        video.addEventListener("pause", function () { videoFondo.pause(); });
+        video.addEventListener("waiting", function () { videoFondo.pause(); });
+        video.addEventListener("playing", function () {
+            videoFondo.currentTime = video.currentTime;
+            videoFondo.play().catch(function () {});
+        });
 
 
 		// ==========================================
@@ -317,18 +579,44 @@
 		// BOTÓN ENTRAR
 		// ==========================================
 
-		boton.addEventListener("click", function () {
+        const intro = document.getElementById("intro");
+        const invitacion = document.getElementById("invitacion");
+        let invitacionAbierta = false;
 
-			/*
-			Acción provisional.
+        boton.addEventListener("click", function () {
+            if (invitacionAbierta) return;
+            invitacionAbierta = true;
+            invitacion.hidden = false;
+            document.documentElement.classList.add("invitacion-abierta");
+            intro.inert = true;
 
-			Más adelante reemplazaremos esto
-			por la entrada a la invitación.
-			*/
+            invitacion.querySelectorAll("video").forEach(function (pajaro) {
+                pajaro.muted = true;
+                pajaro.play().catch(function () {
+                    // Decoracion opcional: no bloquear la invitacion si falla.
+                });
+            });
 
-			alert("Aquí comenzará la invitación");
+            // El fondo blanco ya esta visible debajo antes de desvanecer el intro.
+            intro.getBoundingClientRect();
+            requestAnimationFrame(function () { intro.classList.add("salida"); });
 
-		});
+            let transicionTerminada = false;
+            function terminarTransicion() {
+                if (transicionTerminada) return;
+                transicionTerminada = true;
+                intro.hidden = true;
+                document.getElementById("nombresNovios").focus({ preventScroll: true });
+                // El audio existente permanece en el DOM, sin pausa ni reinicio.
+            }
+            intro.addEventListener("transitionend", function (evento) {
+                if (evento.target === intro && evento.propertyName === "opacity") {
+                    terminarTransicion();
+                }
+            });
+            // Respaldo para movimiento reducido o eventos de transicion omitidos.
+            window.setTimeout(terminarTransicion, 650);
+        });
 
 </script>
 
