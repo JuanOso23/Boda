@@ -10,6 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&amp;family=Cormorant+Garamond:ital,wght@1,400&amp;family=DM+Serif+Display:wght@400&amp;family=Pompiere:wght@400&amp;display=swap">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura:wght@400&amp;display=swap">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&amp;display=swap">
+
     <style>
         * {
             margin: 0;
@@ -343,6 +347,955 @@
         @media (prefers-reduced-motion: reduce) {
             html.invitacion-abierta #intro { transition: none; }
         }
+
+        /* Segunda seccion: composiciones independientes segun orientacion. */
+        .campo {
+            position: relative;
+            isolation: isolate;
+            display: grid;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: #fff;
+            color: rgb(0, 0, 0);
+            overflow: clip;
+        }
+        .campo-imagen,
+        .campo-animacion {
+            display: block;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+        }
+        .campo-imagen,
+        .campo-texto { position: relative; z-index: 1; }
+        .campo-texto {
+            font-family: "Pompiere", serif;
+            font-weight: 400;
+            color: rgb(0, 0, 0);
+            line-height: 1.4;
+            text-align: center;
+            overflow-wrap: break-word;
+            align-self: center;
+        }
+        .campo-animacion-izquierda {
+            position: absolute;
+            z-index: 0;
+        }
+        /* PG2 vertical: fotos amplias y texto estrecho en la primera diagonal. */
+        @media (orientation: portrait) {
+            .campo {
+                grid-template-columns: minmax(0, 65fr) minmax(0, 35fr);
+                grid-template-areas: "infancia celebracion"
+                                     "recomendaciones flores"
+                                     "pareja pareja";
+                gap: clamp(42px, 12vw, 90px) 4vw;
+                align-content: start;
+                padding: clamp(90px, 13vw, 150px) 8vw 9dvh 12vw;
+            }
+            .campo-texto { font-size: clamp(18px, 4.6vw, 30px); }
+            .campo-infancia {
+                grid-area: infancia;
+                width: 110%;
+                justify-self: center;
+                align-self: start;
+                margin-top: 2vw;
+            }
+            .campo-celebracion { grid-area: celebracion; }
+            .campo-recomendaciones {
+                grid-area: recomendaciones;
+                width: 76%;
+                justify-self: center;
+            }
+            .campo-animacion-izquierda {
+                top: -3vw;
+                left: -5vw;
+                width: 43%;
+            }
+            .campo-animacion-derecha {
+                grid-area: flores;
+                width: 145%;
+                align-self: center;
+                justify-self: end;
+            }
+            .campo-pareja {
+                grid-area: pareja;
+                width: 68%;
+                justify-self: center;
+            }
+        }
+        /* PG2 horizontal: flores entre el texto superior y la foto de pareja. */
+        @media (orientation: landscape) {
+            .campo {
+                grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+                grid-template-areas: "infancia celebracion"
+                                     "infancia flores"
+                                     "recomendaciones pareja";
+                column-gap: 8vw;
+                row-gap: 0;
+                align-content: start;
+                padding: max(60px, 7dvh) 8vw max(40px, 5dvh);
+            }
+            .campo-texto { font-size: clamp(20px, 2.1vw, 36px); }
+            .campo-infancia {
+                grid-area: infancia;
+                width: 96%;
+                margin-left: 3vw;
+                align-self: center;
+                justify-self: center;
+            }
+            .campo-celebracion { grid-area: celebracion; width: 90%; justify-self: center; align-self: start; }
+            .campo-recomendaciones {
+                grid-area: recomendaciones;
+                width: 110%;
+                left: 3vw;
+                justify-self: center;
+                align-self: start;
+                margin-top: 8dvh;
+            }
+            .campo-animacion-izquierda {
+                top: -2vw;
+                left: -4vw;
+                width: 25vw;
+            }
+            .campo-animacion-derecha {
+                grid-area: flores;
+                width: 55%;
+                align-self: center;
+                justify-self: center;
+            }
+            .campo-pareja {
+                grid-area: pareja;
+                width: 78%;
+                justify-self: center;
+                align-self: start;
+            }
+        }
+
+        /* PG3: itinerario, con una rejilla distinta para cada orientacion. */
+        .itinerario {
+            position: relative;
+            isolation: isolate;
+            container-type: inline-size;
+            display: grid;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: #fff;
+            color: rgb(0, 0, 0);
+        }
+        .itinerario > * { min-width: 0; }
+        .itinerario-cabecera {
+            grid-area: cabecera;
+            min-width: 0;
+        }
+        .itinerario-superior {
+            transform: none;
+            margin: 0;
+        }
+        .itinerario-sol {
+            grid-area: sol;
+            transform: rotate(-5deg);
+            transform-origin: center;
+            z-index: 1;
+        }
+        .itinerario-titulo {
+            grid-area: titulo;
+            position: relative;
+            z-index: 2;
+            align-self: center;
+            font-weight: 400;
+            text-align: center;
+        }
+        .itinerario-titulo-linea {
+            display: block;
+            font-family: "DM Serif Display", serif;
+            font-size: clamp(22px, 6vw, 46px);
+            line-height: 1.15;
+            color: rgb(70, 155, 29);
+        }
+        .itinerario-gran-dia {
+            display: block;
+            position: relative;
+            left: 1.8em;
+            text-align: left;
+            margin-top: -0.08em;
+            font-family: "Great Vibes", cursive;
+            font-size: clamp(30px, 8vw, 60px);
+            line-height: 1.25;
+            color: rgb(217, 57, 155);
+        }
+        .itinerario-horario {
+            font-family: "Pompiere", serif;
+            font-weight: 400;
+            font-size: clamp(18px, 4.6vw, 30px);
+            line-height: 1.4;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            overflow-wrap: break-word;
+            align-self: center;
+        }
+        .itinerario-llegada { grid-area: llegada; }
+        .itinerario-ceremonia { grid-area: ceremonia; }
+        .itinerario-almuerzo { grid-area: almuerzo; }
+        .itinerario-recurso {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+            align-self: center;
+        }
+        .itinerario-superior { grid-area: superior; }
+        .itinerario-garzas { grid-area: garzas; }
+        .itinerario-pareja { grid-area: pareja; }
+
+        .itinerario-bloque { display: contents; }
+        @media (orientation: portrait) {
+            .itinerario {
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-areas: "cabecera" "llegada" "ceremonia" "almuerzo";
+                grid-template-rows: repeat(4, auto);
+                gap: clamp(12px, 2vw, 22px);
+                align-content: start;
+                padding: 5dvh 5vw 6dvh;
+            }
+            .itinerario-cabecera {
+                position: relative;
+                display: flex;
+                align-items: center;
+                min-height: 42vw;
+                overflow-x: clip;
+                padding-block: 3vw;
+            }
+            .itinerario-titulo {
+                width: 60%;
+                margin-left: 4vw;
+                text-align: left;
+            }
+            .itinerario-titulo-linea { font-size: clamp(24px, 7.5vw, 60px); }
+            .itinerario-gran-dia {
+                left: 1.2em;
+                font-size: clamp(36px, 11vw, 84px);
+            }
+            .itinerario-sol {
+                position: absolute;
+                width: 85%;
+                max-width: none;
+                left: 34%;
+                top: 50%;
+                margin: 0;
+                transform: translateY(-50%) rotate(-10deg);
+            }
+            .itinerario-bloque {
+                position: relative;
+                display: grid;
+                grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+                align-items: start;
+                min-width: 0;
+            }
+            .itinerario-bloque > * { min-width: 0; grid-area: auto; }
+            .itinerario-llegada-grupo { grid-area: llegada; }
+            .itinerario-ceremonia-grupo {
+                grid-area: ceremonia;
+                grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
+            }
+            .itinerario-almuerzo-grupo { grid-area: almuerzo; }
+            .itinerario-horario { width: 100%; }
+            /* Conserva la referencia Pompiere de PG1. */
+            .itinerario-llegada,
+            .itinerario-almuerzo {
+                font-size: max(16px, min(20px, calc((100cqw + 10vw) * 0.04)));
+                text-align: center;
+            }
+            .itinerario-llegada {
+                position: relative;
+                z-index: 2;
+                width: 92%;
+                margin-left: 6vw;
+                align-self: start;
+                padding-top: 0;
+            }
+            .itinerario-superior {
+                position: relative;
+                z-index: 1;
+                width: 110%;
+                max-width: none;
+                justify-self: end;
+                margin-top: 6vw;
+            }
+            .itinerario-pareja {
+                width: 92%;
+                max-width: none;
+                justify-self: center;
+                margin-top: 0;
+            }
+            .itinerario-ceremonia {
+                width: 95%;
+                padding-left: 0;
+                text-align: center;
+                margin-top: 14vw;
+            }
+            .itinerario-garzas {
+                width: 88%;
+                max-width: none;
+                justify-self: center;
+                margin-top: -12vw;
+            }
+            .itinerario-almuerzo {
+                width: 94%;
+                margin-left: 6vw;
+                margin-top: 10vw;
+            }
+        }
+        @media (orientation: landscape) {
+            .itinerario {
+                grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr) minmax(0, 1fr);
+                grid-template-areas: "cabecera cabecera superior"
+                                     "llegada llegada superior"
+                                     "garzas ceremonia pareja"
+                                     "garzas almuerzo pareja";
+                gap: clamp(16px, 2dvh, 28px) 4vw;
+                align-content: start;
+                padding: 5dvh 7vw 5dvh 12vw;
+            }
+            .itinerario-titulo-linea { font-size: clamp(30px, 4.2vw, 80px); }
+            .itinerario-gran-dia { font-size: clamp(44px, 6.2vw, 118px); left: 2.2em; }
+            .itinerario-horario { font-size: clamp(20px, 2vw, 34px); }
+            .itinerario-cabecera {
+                position: relative;
+                display: flex;
+                align-items: start;
+                min-height: 20vw;
+                padding-block: 2vw;
+            }
+            .itinerario-titulo { width: 55%; text-align: left; align-self: start; }
+            .itinerario-sol {
+                position: absolute;
+                width: 58%;
+                max-width: none;
+                left: calc(42% + 5vw);
+                top: 50%;
+                margin: 0;
+                transform: translateY(-50%) rotate(-10deg);
+            }
+            .itinerario-superior {
+                width: 112%;
+                max-width: none;
+                justify-self: center;
+                align-self: end;
+                margin-top: 8vw;
+            }
+            .itinerario-llegada { width: 50%; justify-self: center; }
+            .itinerario-ceremonia,
+            .itinerario-almuerzo { width: 100%; justify-self: center; }
+            .itinerario-garzas {
+                width: 95%;
+                max-width: none;
+                position: relative;
+                left: -3vw;
+                justify-self: start;
+                align-self: start;
+            }
+            .itinerario-pareja {
+                width: 65%;
+                max-width: none;
+                justify-self: center;
+                align-self: start;
+            }
+        }
+
+        /* PG4: continuacion del itinerario y cierre de regalos. */
+        .pg4 {
+            --pg4-rosa: rgb(217, 57, 155);
+            position: relative;
+            isolation: isolate;
+            container-type: inline-size;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: #fff;
+            color: #000;
+            display: grid;
+            align-content: start;
+        }
+        .pg4-escalones { display: grid; }
+        .pg4-escalon {
+            position: relative;
+            display: grid;
+            align-items: center;
+        }
+        .pg4-escalon > * { min-width: 0; }
+        .pg4-texto {
+            position: relative;
+            z-index: 2;
+            font-family: "Pompiere", serif;
+            font-weight: 400;
+            color: #000;
+            text-align: center;
+            line-height: 1.45;
+            overflow-wrap: break-word;
+        }
+        .pg4-horario { display: block; }
+        .pg4-horario + .pg4-horario { margin-top: 0.45em; }
+        .pg4-recurso {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+        }
+        .pg4-sol-foto {
+            position: relative;
+            isolation: isolate;
+            display: grid;
+            padding-bottom: 5%;
+        }
+        .pg4-sol, .pg4-foto { grid-area: 1 / 1; position: relative; }
+        .pg4-sol { z-index: 0; align-self: start; }
+        .pg4-foto {
+            z-index: 1;
+            width: 84%;
+            justify-self: end;
+            align-self: end;
+            margin-top: 18%;
+            transform: rotate(-3deg);
+        }
+        .pg4-cierre {
+            position: relative;
+            display: grid;
+            min-width: 0;
+            align-items: center;
+        }
+        .pg4-regalos {
+            font-family: "Great Vibes", cursive;
+            font-weight: 400;
+            line-height: 1.25;
+            color: var(--pg4-rosa);
+        }
+        .pg4-sobre-grupo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 0;
+        }
+        .pg4-sobre {
+            /* El PNG actual tiene margenes transparentes; se conserva integro. */
+            margin-block: -10%;
+        }
+        @media (orientation: portrait) {
+            .pg4 {
+                padding: 5dvh 5vw 6dvh;
+                gap: clamp(22px, 4dvh, 42px);
+            }
+            .pg4-escalones { gap: clamp(12px, 2vw, 24px); }
+            .pg4-escalon {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                column-gap: 4vw;
+            }
+            .pg4-texto {
+                /* Mismo resultado que PG1: max(16px, 4cqw), ancho maximo 500px.
+                   Recuperar ancho sin padding evita cambiar la escala tipografica. */
+                font-size: max(16px, min(20px, calc((100cqw + 10vw) * 0.04)));
+            }
+            .pg4-sol-foto { padding-bottom: 3%; }
+            .pg4-sol {
+                position: absolute;
+                width: 140%;
+                max-width: none;
+                left: -26%;
+                top: -12%;
+            }
+            .pg4-foto {
+                width: 94%;
+                margin-top: 30%;
+                transform: rotate(7deg);
+            }
+            .pg4-baile {
+                margin-top: -3vw;
+                overflow-x: clip;
+            }
+            .pg4-baile .pg4-texto { width: 132%; }
+            .pg4-pastel {
+                width: 82%;
+                max-width: none;
+                justify-self: center;
+            }
+            .pg4-fiesta { margin-top: -8vw; }
+            .pg4-fiesta .pg4-texto { align-self: end; padding-bottom: 3vw; }
+            .pg4-disco { width: 125%; max-width: none; justify-self: center; }
+            .pg4-cierre { gap: clamp(16px, 4vw, 30px); }
+            .pg4-inferior { width: 42%; justify-self: center; }
+            .pg4-regalos {
+                justify-self: start;
+                margin-left: 8%;
+                font-size: clamp(38px, 10vw, 68px);
+            }
+            .pg4-sobre-grupo { width: 100%; }
+            .pg4-sobre { width: 52%; align-self: center; margin-right: 0; margin-block: -8%; }
+            .pg4-lluvia { width: 100%; }
+        }
+        @media (orientation: landscape) {
+            .pg4 {
+                padding: 6dvh 8vw 6dvh 5vw;
+                gap: 2vw;
+            }
+            .pg4-escalones {
+                grid-template-rows: 36vw 18vw 29vw;
+                gap: 0;
+            }
+            .pg4-escalon {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                column-gap: 9vw;
+                align-items: start;
+            }
+            /* Se conserva la tipografia horizontal aprobada. */
+            .pg4-texto { font-size: clamp(18px, 1.6vw, 25px); }
+            .pg4-sol-foto {
+                width: 100%;
+                height: 35vw;
+                padding: 0;
+                justify-self: center;
+            }
+            .pg4-sol {
+                position: absolute;
+                width: 35vw;
+                max-width: none;
+                left: -6vw;
+                top: -2vw;
+            }
+            .pg4-foto {
+                position: absolute;
+                width: 39vw;
+                max-width: none;
+                left: 4vw;
+                top: 5vw;
+                margin: 0;
+                transform: rotate(-10deg);
+            }
+            .pg4-descanso .pg4-texto {
+                width: 28vw;
+                justify-self: center;
+                left: -4vw;
+                margin-top: 5vw;
+            }
+            .pg4-baile .pg4-texto { margin-top: 2vw; }
+            .pg4-pastel {
+                width: 22vw;
+                max-width: none;
+                justify-self: center;
+                margin-top: -17vw;
+                position: relative;
+                left: -4vw;
+            }
+            .pg4-disco {
+                width: 35vw;
+                max-width: none;
+                justify-self: center;
+                margin-top: 1vw;
+            }
+            .pg4-fiesta .pg4-texto {
+                width: 90%;
+                justify-self: start;
+                left: -7vw;
+                margin-top: 5vw;
+            }
+            .pg4-cierre {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-rows: auto auto;
+                column-gap: 9vw;
+                align-items: start;
+            }
+            .pg4-inferior {
+                grid-column: 2;
+                grid-row: 1 / 3;
+                width: 28vw;
+                justify-self: center;
+                margin-top: -14vw;
+                position: relative;
+                left: -4vw;
+            }
+            .pg4-regalos {
+                grid-column: 1;
+                grid-row: 1;
+                font-size: clamp(46px, 4.4vw, 82px);
+                justify-self: start;
+                margin-left: 5vw;
+            }
+            .pg4-sobre-grupo {
+                grid-column: 1;
+                grid-row: 2;
+                width: 100%;
+                margin-top: -2vw;
+                padding-left: 14vw;
+            }
+            .pg4-sobre { width: 30vw; margin-top: -3vw; margin-bottom: -6vw; }
+        }
+
+        /* PG5: una estructura, dos composiciones artisticas independientes. */
+        .pg5 {
+            --pg5-vino: rgb(133, 20, 58);
+            position: relative;
+            isolation: isolate;
+            display: grid;
+            width: 100%;
+            min-height: 100dvh;
+            background: #fff;
+            color: #000;
+            overflow: clip;
+            text-align: center;
+            align-content: space-between;
+        }
+        .pg5 > * { min-width: 0; }
+        .pg5-ubicacion { grid-area: ubicacion; align-self: center; }
+        .pg5-titulo {
+            font-family: "Allura", cursive;
+            font-weight: 400;
+            line-height: 1.15;
+            color: var(--pg5-vino);
+            margin-bottom: 0.5em;
+        }
+        .pg5-texto {
+            font-family: "Pompiere", serif;
+            font-weight: 400;
+            line-height: 1.45;
+            color: rgb(0, 0, 0);
+            overflow-wrap: break-word;
+        }
+        .pg5-maps {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 44px;
+            min-width: 120px;
+            max-width: 100%;
+            margin-top: 1.5em;
+            padding: 8px 24px;
+            border: 1px solid #c9c9c9;
+            border-radius: 999px;
+            background: #ededed;
+            color: #262626;
+            font-family: "Pompiere", serif;
+            font-size: inherit;
+            line-height: 1.3;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgb(0 0 0 / 12%);
+        }
+        .pg5-maps:hover { background: #e1e1e1; }
+        .pg5-maps:focus-visible {
+            outline: 3px solid var(--pg5-vino);
+            outline-offset: 4px;
+        }
+        .pg5-paisaje-marco {
+            grid-area: paisaje;
+            position: relative;
+            align-self: start;
+            aspect-ratio: 0.7;
+            pointer-events: none;
+        }
+        .pg5-recurso {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+        }
+        .pg5-paisaje {
+            /* El PNG conserva sus margenes originales: se amplian con width,
+               sin escalar ni alterar el archivo. La rejilla reserva la foto visible. */
+            position: absolute;
+            width: 180%;
+            max-width: none;
+            left: -40%;
+            top: 0;
+            transform-origin: center;
+        }
+        .pg5-vestimenta { grid-area: vestimenta; align-self: center; }
+        .pg5-vestimenta-titulo,
+        .pg5-paleta-titulo {
+            font-family: "DM Serif Display", serif;
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--pg5-vino);
+        }
+        .pg5-subtitulo {
+            margin-top: 0.6em;
+            font-family: "Allura", cursive;
+            font-weight: 400;
+            line-height: 1.3;
+            color: rgb(6, 37, 23);
+        }
+        .pg5-paleta-titulo { margin-top: 1.5em; }
+        .pg5-paleta { grid-area: paleta; align-self: center; justify-self: center; }
+        .pg5-recomendaciones { grid-area: recomendaciones; align-self: center; }
+        .pg5-recomendaciones p + p { margin-top: 0.7em; }
+        .pg5-flores { display: block; pointer-events: none; z-index: -1; }
+        @media (orientation: portrait) {
+            .pg5 {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                grid-template-areas: "ubicacion paisaje"
+                                     "vestimenta vestimenta"
+                                     "paleta paleta"
+                                     "recomendaciones recomendaciones";
+                column-gap: 4vw;
+                row-gap: clamp(18px, 5vw, 38px);
+                padding: clamp(30px, 5dvh, 60px) 5vw 6dvh;
+            }
+            /* Misma escala Pompiere de PG1, incluido su limite de 500px. */
+            .pg5-texto { font-size: clamp(16px, 4vw, 20px); }
+            .pg5-titulo { font-size: clamp(34px, 9vw, 68px); }
+            .pg5-titulo-linea { display: block; }
+            .pg5-paisaje { transform: rotate(-10deg); }
+            .pg5-vestimenta { margin-top: clamp(22px, 6vw, 52px); }
+            .pg5-vestimenta-titulo { font-size: clamp(26px, 7vw, 54px); }
+            .pg5-subtitulo { font-size: clamp(24px, 6vw, 46px); }
+            .pg5-paleta-titulo { font-size: clamp(15px, 3.4vw, 26px); }
+            .pg5-paleta {
+                width: 64%;
+                margin-left: 28%;
+            }
+            .pg5-recomendaciones {
+                width: 66%;
+                justify-self: end;
+            }
+            .pg5-flores {
+                position: absolute;
+                bottom: 0;
+                left: -17vw;
+                width: 78%;
+            }
+        }
+        @media (orientation: landscape) {
+            .pg5 {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 0.65fr);
+                grid-template-areas: "paisaje ubicacion ubicacion"
+                                     "vestimenta vestimenta flores"
+                                     "paleta recomendaciones flores";
+                column-gap: 4vw;
+                row-gap: clamp(18px, 3dvh, 36px);
+                padding: max(40px, 5dvh) 5vw 5dvh;
+            }
+            .pg5-texto { font-size: clamp(18px, 1.6vw, 25px); }
+            .pg5-titulo { font-size: clamp(44px, 4.8vw, 86px); }
+            .pg5-ubicacion { width: 82%; justify-self: center; }
+            .pg5-ubicacion .pg5-texto { max-width: 34em; margin-inline: auto; }
+            .pg5-paisaje-marco {
+                width: min(100%, 29vw);
+                aspect-ratio: 1.05;
+                justify-self: center;
+            }
+            .pg5-paisaje {
+                width: 150%;
+                left: -25%;
+                top: -12%;
+                transform: rotate(10deg);
+            }
+            .pg5-vestimenta { width: 78%; justify-self: start; }
+            .pg5-vestimenta-titulo { font-size: clamp(30px, 3vw, 58px); }
+            .pg5-subtitulo { font-size: clamp(28px, 2.6vw, 50px); }
+            .pg5-paleta-titulo { font-size: clamp(17px, 1.5vw, 29px); margin-top: 0.9em; }
+            .pg5-paleta { width: 100%; max-width: 32vw; }
+            .pg5-flores {
+                grid-area: flores;
+                width: calc(100% + 5vw);
+                align-self: end;
+                justify-self: start;
+            }
+        }
+
+        /* PG6: recomendaciones y confirmacion, sin alterar secciones anteriores. */
+        .pg6 {
+            position: relative;
+            isolation: isolate;
+            display: grid;
+            width: 100%;
+            min-height: 100dvh;
+            background: #fff;
+            color: #000;
+            text-align: left;
+            overflow: clip;
+            align-content: start;
+        }
+        .pg6 > * { min-width: 0; }
+        .pg6-recomendaciones { grid-area: recomendaciones; }
+        .pg6-titulo {
+            font-family: "DM Serif Display", serif;
+            font-weight: 400;
+            line-height: 1.2;
+            color: rgb(25, 190, 111);
+            margin-bottom: 0.9em;
+        }
+        .pg6-texto {
+            font-family: "Pompiere", serif;
+            font-weight: 400;
+            line-height: 1.45;
+            color: #000;
+            overflow-wrap: break-word;
+        }
+        .pg6-lista {
+            list-style: disc outside;
+            padding-left: 1.35em;
+            margin-top: 1.4em;
+        }
+        .pg6-lista li + li { margin-top: 0.25em; }
+        .pg6-lista li::marker { color: #000; }
+        .pg6-recurso {
+            display: block;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+        }
+        .pg6-fotos {
+            grid-area: fotos;
+            align-self: center;
+            justify-self: center;
+        }
+        .pg6-flores {
+            position: absolute;
+            z-index: -1;
+        }
+        .pg6-confirmacion { grid-area: confirmacion; }
+        .pg6-confirmacion-titulo {
+            font-family: "Allura", cursive;
+            font-weight: 400;
+            line-height: 1.4;
+            padding-block: 0.1em;
+            color: rgb(148, 5, 53);
+            margin-bottom: 0.65em;
+        }
+        .pg6-confirmacion-texto { text-align: center; }
+        @media (orientation: portrait) {
+            .pg6 {
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-areas: "recomendaciones" "fotos" "confirmacion";
+                gap: clamp(20px, 5vw, 42px);
+                padding: clamp(44px, 12vw, 92px) 10vw 8dvh;
+            }
+            /* Escala de PG1: 4% del ancho, entre 16 y 20px. */
+            .pg6-texto { font-size: clamp(16px, 4vw, 20px); }
+            .pg6-titulo { font-size: clamp(26px, 6vw, 50px); }
+            .pg6-introduccion,
+            .pg6-lista {
+                width: 78%;
+                margin-left: 5%;
+            }
+            .pg6-flores {
+                width: 58%;
+                top: -2vw;
+                right: -3vw;
+            }
+            .pg6-fotos { width: 114%; max-width: none; }
+            .pg6-confirmacion { width: 100%; justify-self: center; }
+            .pg6-confirmacion-titulo { font-size: clamp(36px, 8vw, 66px); }
+        }
+        @media (orientation: landscape) {
+            .pg6 {
+                grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+                grid-template-areas: "recomendaciones fotos"
+                                     "confirmacion confirmacion";
+                column-gap: 3vw;
+                row-gap: clamp(48px, 8dvh, 100px);
+                padding: max(40px, 6dvh) 6vw 8dvh 14vw;
+            }
+            .pg6-texto { font-size: clamp(18px, 1.6vw, 25px); }
+            .pg6-titulo { font-size: clamp(32px, 3.8vw, 68px); }
+            .pg6-introduccion,
+            .pg6-lista { width: 94%; margin-left: 6%; }
+            .pg6-fotos { width: 114%; max-width: none; }
+            .pg6-flores {
+                width: 36vw;
+                left: -7vw;
+                bottom: 0;
+                transform: rotate(180deg);
+            }
+            .pg6-confirmacion {
+                width: 68%;
+                margin-left: 8%;
+                justify-self: center;
+            }
+            .pg6-confirmacion-titulo { font-size: clamp(44px, 4.8vw, 84px); }
+        }
+
+        /* PG7: cierre de la invitacion, con instancias decorativas independientes. */
+        .pg7 {
+            position: relative;
+            isolation: isolate;
+            display: grid;
+            width: 100%;
+            min-height: 100dvh;
+            background: #fff;
+            align-content: start;
+        }
+        .pg7 > *, .pg7-fotografias > *, .pg7-despedida > * { min-width: 0; }
+        .pg7-fotografias, .pg7-despedida {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .pg7-recurso {
+            display: block;
+            height: auto;
+            object-fit: contain;
+            user-select: none;
+        }
+        .pg7-animacion { pointer-events: none; }
+        .pg7-mensaje {
+            font-family: "Allura", cursive;
+            font-weight: 400;
+            line-height: 1.35;
+            color: rgb(146, 17, 61);
+            text-align: center;
+        }
+        .pg7-firma {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 0.6em;
+            width: 100%;
+            color: rgb(38, 174, 119);
+            font-weight: 400;
+            line-height: 1.4;
+            padding-block: 0.2em;
+        }
+        .pg7-firma span { white-space: nowrap; }
+        .pg7-carino { font-family: "Comfortaa", sans-serif; }
+        .pg7-monica { font-family: "Allura", cursive; }
+        .pg7-cristian { font-family: "DM Serif Display", serif; }
+        @media (orientation: portrait) {
+            .pg7 { padding: 3dvh 2vw 6dvh; gap: 5vw; }
+            .pg7-fotos { width: 100%; }
+            /* Aprovecha exclusivamente el margen transparente original del PNG. */
+            .pg7-pareja { width: 42%; margin-top: -32vw; }
+            .pg7-sol { display: none; }
+            .pg7-despedida { gap: 4vw; }
+            .pg7-mensaje { width: 88%; font-size: clamp(24px, 6vw, 56px); }
+            .pg7-carino { font-size: clamp(12px, 3.2vw, 26px); }
+            .pg7-monica { font-size: clamp(24px, 7vw, 56px); }
+            .pg7-cristian { font-size: clamp(18px, 4.8vw, 40px); }
+        }
+        @media (orientation: landscape) {
+            .pg7 {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+                column-gap: 5vw;
+                padding: 3dvh 4vw 6dvh;
+            }
+            .pg7-fotos { width: 100%; }
+            .pg7-pareja { width: 27%; margin-top: -18vw; }
+            .pg7-despedida { padding-top: 4vw; }
+            .pg7-sol { width: 23vw; margin-bottom: 2vw; }
+            .pg7-mensaje { width: 98%; font-size: clamp(32px, 3.4vw, 66px); }
+            .pg7-firma { margin-top: 4vw; }
+            .pg7-carino { font-size: clamp(14px, 1.8vw, 34px); }
+            .pg7-monica { font-size: clamp(30px, 4.3vw, 80px); }
+            .pg7-cristian { font-size: clamp(24px, 3vw, 56px); }
+        }
     </style>
 </head>
 
@@ -415,7 +1368,192 @@
                 Pirgua, Tunja.
             </p>
         </section>
-        <!-- Agregar las siguientes secciones aqui, dentro del mismo main. -->
+        <section class="campo" aria-label="Un día de campo para celebrar nuestra boda">
+            <video class="campo-animacion campo-animacion-izquierda"
+                   autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+                <source src="AnimPG2_Izq.mp4" type="video/mp4">
+            </video>
+            <img class="campo-imagen campo-infancia" src="ImgSuperiorPG2.png"
+                 width="5905" height="4724" alt="Ilustraciones de Mónica y Cristian en su infancia">
+            <p class="campo-texto campo-celebracion">
+                Vamos a celebrar nuestra boda con un día de campo, para que disfrutemos de la naturaleza y del aire libre.
+            </p>
+            <p class="campo-texto campo-recomendaciones">
+                Y hemos pensado en algunas recomendaciones que nos parecen importantes para que todas (os) tengamos un día cómodo y fabuloso.
+            </p>
+            <video class="campo-animacion campo-animacion-derecha"
+                   autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+                <source src="AnimPG2_Derecha.mp4" type="video/mp4">
+            </video>
+            <img class="campo-imagen campo-pareja" src="ImgInferiorPG2.png"
+                 width="5905" height="4724" alt="Ilustración de Mónica y Cristian juntos">
+        </section>
+        <section class="itinerario" aria-labelledby="tituloItinerario">
+            <div class="itinerario-cabecera">
+                <h2 class="itinerario-titulo" id="tituloItinerario">
+                    <span class="itinerario-titulo-linea">Itinerario del</span>
+                    <span class="itinerario-gran-dia">Gran Día</span>
+                </h2>
+                <img class="itinerario-recurso itinerario-sol" src="ImgPG_3.png"
+                     width="5905" height="4724" alt="Ilustración del sol">
+            </div>
+            <div class="itinerario-bloque itinerario-llegada-grupo">
+                <p class="itinerario-horario itinerario-llegada">
+                    12:00 m - Llegada de las (os) invitadas (os). Cóctel y pasabocas de bienvenida mientras disfrutamos del paisaje.
+                </p>
+                <video class="itinerario-recurso itinerario-superior"
+                       autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+                    <source src="AnimPG3_Superior.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="itinerario-bloque itinerario-ceremonia-grupo">
+                <video class="itinerario-recurso itinerario-pareja"
+                       autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+                    <source src="AnimPG3_Pareja.mp4" type="video/mp4">
+                </video>
+                <p class="itinerario-horario itinerario-ceremonia">1:00 p.m - Ceremonia</p>
+            </div>
+            <div class="itinerario-bloque itinerario-almuerzo-grupo">
+                <p class="itinerario-horario itinerario-almuerzo">
+                    2:30 p.m - Almuerzo campestre y saludos protocolarios
+                </p>
+                <video class="itinerario-recurso itinerario-garzas"
+                       autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+                    <source src="AnimPG3_Garzas.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+        <section class="pg4" aria-label="Itinerario de la tarde y regalos">
+            <div class="pg4-escalones">
+                <div class="pg4-escalon pg4-descanso">
+                    <div class="pg4-sol-foto">
+                        <video class="pg4-recurso pg4-sol" autoplay muted loop playsinline
+                               preload="metadata" aria-hidden="true" tabindex="-1">
+                            <source src="AnimPG4_Sol.mp4" type="video/mp4">
+                        </video>
+                        <img class="pg4-recurso pg4-foto" src="ImgSuperiorPG4.png"
+                             width="5905" height="4724" alt="Mónica y Cristian descansando juntos al sol">
+                    </div>
+                    <p class="pg4-texto">3:30 pm - Hora de &quot;tomar&quot; (tomar el sol, un descanso, el aire fresco, el tiempo para dar un paseo, un rato de juego, las fotos, unas bebidas)</p>
+                </div>
+                <div class="pg4-escalon pg4-baile">
+                    <p class="pg4-texto">
+                        <span class="pg4-horario">5:00 pm - Pastel.</span>
+                        <span class="pg4-horario">5:30 p.m - Primer baile de Mónica y Cristian</span>
+                        <span class="pg4-horario">(se abre la pista de baile)</span>
+                    </p>
+                    <video class="pg4-recurso pg4-pastel" autoplay muted loop playsinline
+                           preload="metadata" aria-hidden="true" tabindex="-1">
+                        <source src="AnimPG4_Pastel.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="pg4-escalon pg4-fiesta">
+                    <video class="pg4-recurso pg4-disco" autoplay muted loop playsinline
+                           preload="metadata" aria-hidden="true" tabindex="-1">
+                        <source src="AnimPG4_Disco.mp4" type="video/mp4">
+                    </video>
+                    <p class="pg4-texto">
+                        <span class="pg4-horario">6:00 pm - Orquesta y bailoteo.</span>
+                        <span class="pg4-horario">8:30 p.m - Marcha Final.</span>
+                    </p>
+                </div>
+            </div>
+            <div class="pg4-cierre">
+                <video class="pg4-recurso pg4-inferior" autoplay muted loop playsinline
+                       preload="metadata" aria-hidden="true" tabindex="-1">
+                    <source src="AnimPG4_Inferior.mp4" type="video/mp4">
+                </video>
+                <h2 class="pg4-regalos">Regalos</h2>
+                <div class="pg4-sobre-grupo">
+                    <img class="pg4-recurso pg4-sobre" src="ImgInferiorPG4.png"
+                         width="5905" height="4724" alt="Sobre ilustrado para regalos">
+                    <p class="pg4-texto pg4-lluvia">Lluvia de sobres</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="pg5" aria-labelledby="tituloPG5">
+            <div class="pg5-ubicacion">
+                <h2 class="pg5-titulo" id="tituloPG5">¿Cómo llegar <span class="pg5-titulo-linea">a la fiesta?</span></h2>
+                <p class="pg5-texto">
+                    La ceremonia y la recepción tendrán lugar
+                    en la finca &quot;El Angelito&quot;, ubicada en la
+                    vereda de Pirgua. A continuación te
+                    dejamos una las coordenadas de Google
+                    Maps para que puedas llegar sin problema.
+                </p>
+                <a class="pg5-maps pg5-texto"
+                   href="https://maps.app.goo.gl/aTEFBdutHE8KAivy8"
+                   target="_blank" rel="noopener noreferrer">Ver en Maps</a>
+            </div>
+            <div class="pg5-paisaje-marco">
+                <img class="pg5-recurso pg5-paisaje" src="ImgPaisajePG5.png"
+                     alt="Paisaje de la finca en una fotografía ilustrada con cinta adhesiva">
+            </div>
+            <div class="pg5-vestimenta">
+                <h2 class="pg5-vestimenta-titulo">Código de vestimenta</h2>
+                <p class="pg5-subtitulo">Primaveral, orgánico, natural.</p>
+                <h3 class="pg5-paleta-titulo">Paleta de colores sugerida</h3>
+            </div>
+            <picture class="pg5-flores" aria-hidden="true">
+                <source media="(orientation: landscape)" srcset="ImgFloresHorizPG5.png">
+                <img class="pg5-recurso" src="ImgFloresVertPG5.png" alt="">
+            </picture>
+            <video class="pg5-recurso pg5-paleta" autoplay muted loop playsinline
+                   preload="metadata" aria-hidden="true" tabindex="-1">
+                <source src="AnimPG5.mp4" type="video/mp4">
+            </video>
+            <div class="pg5-texto pg5-recomendaciones">
+                <p>Para ellas: Siéntete en libertad de usar un vestido, combinar
+                    una blusa con un pantalón o una falda según prefieras. Evita el
+                    color blanco.</p>
+                <p>Para ellos: No es necesario usar esmóquin ni corbata (si no
+                    quieres), puedes usar un traje cómodo. Evita el color azul.</p>
+            </div>
+        </section>
+
+        <section class="pg6" aria-labelledby="tituloPG6">
+            <div class="pg6-recomendaciones">
+                <h2 class="pg6-titulo" id="tituloPG6">Recomendaciones</h2>
+                <p class="pg6-texto pg6-introduccion">Para disfrutar un día de campo primaveral y decembrino en Tunja, te recomendamos lo siguiente:</p>
+                <ul class="pg6-texto pg6-lista">
+                    <li>Llevar buen abrigo para el frío de la noche (chaqueta, ruana, lo que tu prefieras)</li>
+                    <li>Calzado cómodo.</li>
+                    <li>Protección solar.</li>
+                    <li>Y por último, en la finca hay animales entonces te solicitamos no llevar mascotas.</li>
+                </ul>
+            </div>
+            <img class="pg6-recurso pg6-flores" src="ImgPG6_Superior.png" alt="">
+            <img class="pg6-recurso pg6-fotos" src="ImgPG6_Inferior.png"
+                 alt="Dos fotografías ilustradas de Mónica y Cristian">
+            <div class="pg6-confirmacion">
+                <h2 class="pg6-confirmacion-titulo">Confirma tu asistencia</h2>
+                <p class="pg6-texto pg6-confirmacion-texto">A continuación te dejamos una encuesta para que confirmes tu asistencia y para conocer otros detalles que nos permitirán organizar un día mágico para todos. Cada respuesta nos hace muy felices.</p>
+            </div>
+        </section>
+
+        <section class="pg7" aria-labelledby="mensajePG7">
+            <div class="pg7-fotografias">
+                <img class="pg7-recurso pg7-fotos" src="ImgPG7.png"
+                     width="1771" height="2480" alt="Composición ilustrada de fotografías de Mónica y Cristian a lo largo de sus vidas">
+                <video class="pg7-recurso pg7-animacion pg7-pareja" autoplay muted loop playsinline
+                       preload="metadata" aria-hidden="true" tabindex="-1">
+                    <source src="AnimPG3_Pareja.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="pg7-despedida">
+                <video class="pg7-recurso pg7-animacion pg7-sol" autoplay muted loop playsinline
+                       preload="metadata" aria-hidden="true" tabindex="-1">
+                    <source src="AnimPG4_Sol.mp4" type="video/mp4">
+                </video>
+                <h2 class="pg7-mensaje" id="mensajePG7">Nos hace mucha ilusión compartir este 12 de diciembre contigo</h2>
+                <p class="pg7-firma">
+                    <span class="pg7-carino">Con cariño,</span>
+                    <span class="pg7-monica">Mónica y</span>
+                    <span class="pg7-cristian">Cristian</span>
+                </p>
+            </div>
+        </section>
     </main>
 
     <script>
