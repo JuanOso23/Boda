@@ -986,6 +986,19 @@
             text-decoration: none;
             box-shadow: 0 2px 5px rgb(0 0 0 / 12%);
         }
+
+        .pg5-maps-enlaces {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 1.5em;
+        }
+        .pg5-maps-enlaces .pg5-maps {
+            min-width: 0;
+            margin-top: 0;
+            padding-inline: clamp(4px, 1vw, 24px);
+            white-space: nowrap;
+        }
         .pg5-maps:hover { background: #e1e1e1; }
         .pg5-maps:focus-visible {
             outline: 3px solid var(--pg5-vino);
@@ -1096,7 +1109,7 @@
                 top: -12%;
                 transform: rotate(10deg);
             }
-            .pg5-vestimenta { width: 78%; justify-self: start; }
+            .pg5-vestimenta { width: 78%; justify-self: start; margin-top: 28px; }
             .pg5-vestimenta-titulo { font-size: clamp(30px, 3vw, 58px); }
             .pg5-subtitulo { font-size: clamp(28px, 2.6vw, 50px); }
             .pg5-paleta-titulo { font-size: clamp(17px, 1.5vw, 29px); margin-top: 0.9em; }
@@ -1171,6 +1184,18 @@
             margin-bottom: 0.65em;
         }
         .pg6-confirmacion-texto { text-align: center; }
+        .pg6-confirmacion-accion {
+            --pg5-vino: rgb(133, 20, 58);
+            text-align: center;
+        }
+        @media (orientation: landscape) {
+            .pg6 .pg6-flores {
+                /* Compensar solo la altura nueva del boton y su margen superior. */
+                --pg6-boton-fuente: clamp(18px, 1.6vw, 25px);
+                bottom: calc(max(44px, 1.3 * var(--pg6-boton-fuente) + 18px) + 1.5 * var(--pg6-boton-fuente));
+            }
+        }
+
         @media (orientation: portrait) {
             .pg6 {
                 grid-template-columns: minmax(0, 1fr);
@@ -1475,16 +1500,15 @@
         <section class="pg5" aria-labelledby="tituloPG5">
             <div class="pg5-ubicacion">
                 <h2 class="pg5-titulo" id="tituloPG5">¿Cómo llegar <span class="pg5-titulo-linea">a la fiesta?</span></h2>
-                <p class="pg5-texto">
-                    La ceremonia y la recepción tendrán lugar
-                    en la finca &quot;El Angelito&quot;, ubicada en la
-                    vereda de Pirgua. A continuación te
-                    dejamos una las coordenadas de Google
-                    Maps para que puedas llegar sin problema.
-                </p>
-                <a class="pg5-maps pg5-texto"
-                   href="https://maps.app.goo.gl/aTEFBdutHE8KAivy8"
-                   target="_blank" rel="noopener noreferrer">Ver en Maps</a>
+                <p class="pg5-texto">La ceremonia y la recepción tendrán lugar en la finca &quot;El Angelito&quot;, ubicada en la vereda de Pirgua. A continuación te dejamos las coordenadas de Google Maps y Apple Maps para que puedas llegar sin problema.</p>
+                <div class="pg5-texto pg5-maps-enlaces">
+                    <a class="pg5-maps"
+                       href="https://www.google.com/maps/dir/?api=1&amp;destination=5.5677483%2C-73.3071669"
+                       target="_blank" rel="noopener noreferrer">Google Maps</a>
+                    <a class="pg5-maps"
+                       href="https://maps.apple.com/?daddr=5.5677483%2C-73.3071669"
+                       target="_blank" rel="noopener noreferrer">Apple Maps</a>
+                </div>
             </div>
             <div class="pg5-paisaje-marco">
                 <img class="pg5-recurso pg5-paisaje" src="ImgPaisajePG5.png"
@@ -1529,6 +1553,10 @@
             <div class="pg6-confirmacion">
                 <h2 class="pg6-confirmacion-titulo">Confirma tu asistencia</h2>
                 <p class="pg6-texto pg6-confirmacion-texto">A continuación te dejamos una encuesta para que confirmes tu asistencia y para conocer otros detalles que nos permitirán organizar un día mágico para todos. Cada respuesta nos hace muy felices.</p>
+                <div class="pg6-texto pg6-confirmacion-accion">
+                    <a class="pg5-maps" href="https://forms.gle/69nCb3wrdHS8fbxG8"
+                       target="_blank" rel="noopener noreferrer">Confirmar asistencia</a>
+                </div>
             </div>
         </section>
 
