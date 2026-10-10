@@ -300,6 +300,9 @@
             text-align: center;
             overflow-wrap: break-word;
         }
+        @media (orientation: portrait) {
+            .bienvenida-detalles { bottom: calc(7% + 15px); }
+        }
         /* La base conserva la composicion vertical y ocupa al menos el viewport.
            En horizontal se redistribuyen los mismos elementos, sin duplicar HTML. */
         @media (orientation: landscape) {
@@ -346,6 +349,56 @@
         }
         @media (prefers-reduced-motion: reduce) {
             html.invitacion-abierta #intro { transition: none; }
+        }
+
+
+        /* Indicador de PG1: superpuesto, sin participar en la composicion. */
+        .pg1-sigue {
+            position: absolute;
+            z-index: 3;
+            left: 50%;
+            bottom: max(8px, 1%);
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            min-width: 112px;
+            min-height: 44px;
+            padding: 2px 8px;
+            border: 0;
+            background: transparent;
+            color: rgb(146, 17, 61);
+            font: 400 9px/1.3 "Comfortaa", sans-serif;
+            letter-spacing: 0.14em;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 300ms ease;
+        }
+        .pg1-sigue-flecha {
+            display: block;
+            width: 16px;
+            height: 18px;
+            animation: pg1-sigue-bajar 1.8s ease-in-out infinite;
+        }
+        .pg1-sigue.oculto { opacity: 0; pointer-events: none; }
+        .pg1-sigue:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+        @keyframes pg1-sigue-bajar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+        }
+        @media (orientation: landscape) {
+            .pg1-sigue { bottom: 4px; min-height: 32px; }
+            .pg1-sigue-flecha { height: 14px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .pg1-sigue-flecha { animation: none; }
+            .pg1-sigue { transition: none; }
         }
 
         /* Segunda seccion: composiciones independientes segun orientacion. */
@@ -1392,6 +1445,15 @@
                 en la finca &quot;El Angelito&quot;, vereda de<br>
                 Pirgua, Tunja.
             </p>
+            <button class="pg1-sigue oculto" type="button" aria-label="Sigue abajo, ir a la segunda pagina"
+                    aria-hidden="true" tabindex="-1">
+                <span>SIGUE ABAJO</span>
+                <svg class="pg1-sigue-flecha" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <path d="M12 3v17M6 14l6 6 6-6"/>
+                </svg>
+            </button>
         </section>
         <section class="campo" aria-label="Un día de campo para celebrar nuestra boda">
             <video class="campo-animacion campo-animacion-izquierda"
@@ -1783,6 +1845,44 @@
             // Respaldo para movimiento reducido o eventos de transicion omitidos.
             window.setTimeout(terminarTransicion, 650);
         });
+
+
+        // Un solo listener pasivo, agrupado por frame; se usa el scroll del documento.
+        const indicadorPG1 = document.querySelector(".pg1-sigue");
+        const inicioPG1 = document.querySelector(".bienvenida");
+        const destinoPG2 = document.querySelector(".campo");
+        const movimientoReducidoPG1 = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let frameIndicadorPG1 = 0;
+        let posicionInicioPG1 = 0;
+
+        function actualizarIndicadorPG1() {
+            frameIndicadorPG1 = 0;
+            const desplazamiento = window.scrollY - posicionInicioPG1;
+            const visible = !invitacion.hidden && desplazamiento >= -1 && desplazamiento < 40;
+            indicadorPG1.classList.toggle("oculto", !visible);
+            indicadorPG1.setAttribute("aria-hidden", String(!visible));
+            indicadorPG1.tabIndex = visible ? 0 : -1;
+        }
+        function programarIndicadorPG1() {
+            if (!frameIndicadorPG1) {
+                frameIndicadorPG1 = requestAnimationFrame(actualizarIndicadorPG1);
+            }
+        }
+        function medirInicioPG1() {
+            posicionInicioPG1 = inicioPG1.getBoundingClientRect().top + window.scrollY;
+            programarIndicadorPG1();
+        }
+        window.addEventListener("scroll", programarIndicadorPG1, { passive: true });
+        window.addEventListener("resize", medirInicioPG1, { passive: true });
+        window.addEventListener("pageshow", medirInicioPG1);
+        boton.addEventListener("click", medirInicioPG1);
+        indicadorPG1.addEventListener("click", function () {
+            destinoPG2.scrollIntoView({
+                block: "start",
+                behavior: movimientoReducidoPG1.matches ? "auto" : "smooth"
+            });
+        });
+        actualizarIndicadorPG1();
 
 </script>
 
